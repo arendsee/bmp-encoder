@@ -2,9 +2,10 @@
 // Zebulun Arendsee
 // COSC 1030, Asignment #9, fall 2010
 // December 3, 2010
+// Updated August 2015
 
 #include <iostream>
-using std::cout;
+using std::cerr;
 using std::endl;
 #include <stdlib.h>
 #include <iostream>
@@ -31,27 +32,28 @@ Enter arguments on the command line in the following format:
 int main(int argc, char* argv[]){
 	// If there are 3 arguments, must be decoding operation
 	if(argc == 3){
-		cout << "decoding '" << argv[1] << "' BMP file to text file '" 
-			 << argv[2] << "'" << endl;
+		cerr << "decoding "
+             << "'" << argv[1] << "' BMP file to text file " 
+			 << "'" << argv[2] << "'" << endl;
 		BMP coded(argv[1]);
 		decode(coded, argv[2]);
 	}
 	// If there are 4 arguments, must be encoding operation
 	else if(argc == 4){
-		cout << "encoding '" << argv[1] << "' file to BMP file '"
-			 << argv[2] << "' written to encoded file '" << argv[3] 
-			 << "'" << endl;
+		cerr << "encoding "
+             << "'" << argv[1] << "' file to BMP file "
+			 << "'" << argv[2] << "' written to encoded file "
+             << "'" << argv[3] << "'" << endl;
 		Text txt(argv[1]);
 		BMP in(argv[2]);
 		WriteBMP out(argv[3], in);
 		encode(in, txt, out);
 	}
-	// If neither, tell user how to correctly input arguments
+	// If neither, print usage
 	else{
-		cout << "There must be two arguments for decoding (an input" << endl
-                     << "BMP file and an output text file, in that order)" << endl
-                     << "\nOr three arguments for encoding (a code text file," << endl
-                     << "a BMP infile and a coded BMP outfile, in that order)" << endl;
+        cerr << "USAGE\n"
+                "\tbmp-encoder text-filename bmp-filename text-output-filename\n"
+                "\tbmp-encoder bmp-filename encoded-bmp-output-filename\n";
 	}
 }
 
@@ -87,7 +89,7 @@ void decode(BMP& code, char outfile[]){
 // Encoding script
 void encode(BMP& in, Text& txt, WriteBMP& out){
 	if(txt.get_filesize() > (8 * in.get_filesize())){
-		cout << "BMP file is too small to encode the text file\n";
+		cerr << "BMP file is too small to encode the text file\n";
 		exit(1);
 	}	
 	unsigned char ch(0), temp(0);
